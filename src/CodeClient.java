@@ -25,9 +25,9 @@ public class CodeClient {
         }
         System.out.println("Connecting to "+hostName+":"+portNumber);
         try (
-            Socket echoSocket = new Socket(hostName, portNumber);//create the socket
-            PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);//create the writer to send messages to the server
-            BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));//create the reader to receive messages
+            Socket clientSocket = new Socket(hostName, portNumber);//create the socket
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);//create the writer to send messages to the server
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));//create the reader to receive messages
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))//create the reader to take input from the user
         ) {
             String userInput = "ASCII";
@@ -36,7 +36,7 @@ public class CodeClient {
             String response = in.readLine();
             if (!response.equals("ASCII: OK")){
                 System.out.println("Invalid response from server. Closing connection.");
-                echoSocket.close();
+                clientSocket.close();
                 System.exit(1);
             }
             System.out.println("SERVER: "+response);
@@ -57,7 +57,7 @@ public class CodeClient {
                     userInput = stdIn.readLine();
                 }
             }
-            echoSocket.close();
+            clientSocket.close();
             System.exit(1);
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
